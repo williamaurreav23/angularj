@@ -1,0 +1,41 @@
+<div class="container-fluid h-100 d-flex justify-content-center">
+  <div class="row my-auto">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12 mx-auto">
+          <div class="jumbotron shadow">
+            <h3 class="mb-1 text-center">
+              <span class="oi oi-lock-locked"></span>
+              &nbsp; Log in to Spring Boot Angular Template
+            </h3>
+          </div>
+          <!-- form card login -->
+          <div class="card rounded-1">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12"><h6>Choose your Account:</h6></div>
+                <div class="col-12">
+                  <p-selectButton [options]="loginAccounts" [(ngModel)]="selectedAccount"></p-selectButton>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col">
+                  <a [href]="selectedAccount" class="btn btn-primary btn-block">
+                    Login
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!--/card-block-->
+          </div>
+          <!-- /form card login -->
+        </div>
+      </div>
+      <!--/row-->
+    </div>
+    <!--/col-->
+  </div>
+  <!--/row-->
+</div>
+<!--/container-->
