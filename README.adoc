@@ -1,0 +1,290 @@
+:icons: font
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Spring-Boot-Angular-Template image:https://travis-ci.com/mrrobworks/spring-boot-angular-template.svg?branch=master["Build Status", link="https://travis-ci.com/mrrobworks/spring-boot-angular-template"]
+
+Starter Template to create a *OAuth2* secured *dockerized Spring Boot 2.1* Application with *Angular 8* Frontend.
+
+A user with a Google- or Github-Account get access to the Application using OAuth2-Authentication, so no additional User Registration is required.
+A new user get the Default-Role _ROLE_USER_.
+Additional Roles, like _ROLE_ADMIN_ for administrative access, can be assigned to a user through the Role-Management.
+The data get stored in a PostgreSQL database inside a Docker-Container.
+
+.Login-Screen
+image:https://user-images.githubusercontent.com/37511144/57142263-678bb880-6dbc-11e9-924d-14ab1ed2c710.png[spring-boot-angular-login]
+
+== Technology-Stack image:http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat["StackShare", link="https://stackshare.io/mrrobworks/spring-boot-angular-template-stack"]
+
+image:https://user-images.githubusercontent.com/37511144/66196552-092f7280-e699-11e9-9c04-3c1e65f146d3.png[spring-boot-angular-template-stack]
+
+Need to be installed on the OS to startup the application:
+https://www.docker.com/get-started[Docker]
+
+Need to be installed on the OS for development purposes: https://git-scm.com/downloads[Git],
+https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html[JDK 11],
+https://maven.apache.org/download.cgi[Maven],
+https://projectlombok.org/download[Lombok],
+https://nodejs.org/en/[Node.js],
+https://cli.angular.io/[Angular-CLI]
+
+== Getting Started
+
+To get the application running, some configuration need to be to do.
+
+=== Prerequisites
+
+*Step 1:* Install  https://www.docker.com/get-started[Docker] on your OS. Direct Download Links:
+https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe[Docker for Windows],
+https://download.docker.com/mac/stable/Docker.dmg[Docker for Mac-OS]
+
+*Step 2:* After Docker is installed, go to the _Docker-Settings_ and share the drive in which you will later download the
+https://github.com/mrrobworks/spring-boot-angular-template/releases/download/v0.1-alpha/spring-boot-angular-template.tar.gz[latest Release]
+of the Spring-Boot-Angular-Template.
+This is necessary for accessing the SQL-Files for setting up the database.
+
+[[obtaining-api-keys]]
+=== Obtaining API-Keys
+
+To use the O2Auth-Authentication from Google or Github, we need to register this application to obtain the appropiate Client-ID and Client-Secret.
+
+'''
+
+image:https://user-images.githubusercontent.com/37511144/55681624-ab5be100-5928-11e9-82bf-e5e352485c17.png[google,width=250]
+
+*Step 1:* Visit the https://cloud.google.com/console/project[Google Cloud Console]
+
+*Step 2:* Click on the Button *Create Project*
+
+*Step 3:* In the following _New Project_-Dialog set as _Project name_ *spring_boot_angular_template* and click on the Button *Create*
+
+*Step 4:* On the top left, click on the Button with the *three horizontal stripes* to open the left-side Navigation-Menu.
+Select *APIs & Services -> Credentials*
+
+*Step 5:* In the _Credentials-View_ click on the Button *Create credentials* and than select the Menu-Item *OAuth client ID*.
+
+*Step 6:* In the Create _OAuth client ID_-Dialog type in following:
+
+image:https://user-images.githubusercontent.com/37511144/55275019-eb471680-52df-11e9-85c3-a7e549762505.png[create oauth client id]
+
+Click than on the *Create*-Button.
+
+*Step 7:* A dialog appears with a generated _client ID_ and _client secret_ which you need to copy for later usage.
+
+'''
+
+image:https://user-images.githubusercontent.com/37511144/55681693-96cc1880-5929-11e9-980e-986a753386ae.png[github,width=250]
+
+*Step 1:* Visit the https://github.com/settings/profile[Github Account Settings]
+
+*Step 2:* Press on the left navigation side menu the Menu-Item *Developer-Settings*
+
+*Step 3:* In the Developer-Settings, select on the left navigation side menu *OAuth Apps* and click on the Button *Register a new application*.
+
+*Step 4:* In the _Register a new OAuth application_-Dialog type in following:
+
+image:https://user-images.githubusercontent.com/37511144/56457063-baee1780-6375-11e9-8c7a-50a4470a8c9b.png[github-register-new-oauth-application]
+
+Click than on the button *Register application*
+
+*Step 5:* In the following view copy the generated _Client ID_ and _Client Secret_ for later usage.
+
+NOTE: Unfortunately github is not allowing adding more than one _Homepage URL_ and _Authorization callback URL_.
+So for development purposes using the Google-OAuth2 should be prefered.
+
+=== Installing
+
+*Step 1:* Download the https://github.com/mrrobworks/spring-boot-angular-template/releases/download/v0.1-alpha/spring-boot-angular-template.tar.gz[latest Release]
+to your working-directory and unzip the file with following commands:
+
+```bash
+$ wget https://github.com/mrrobworks/spring-boot-angular-template/releases/download/v0.1-alpha/spring-boot-angular-template.tar.gz
+$ tar -xvzf spring-boot-angular-template.tar.gz
+```
+
+*Step 2:* Load the Docker-Image to your Local Docker Registry with:
+
+```bash
+$ docker load < docker-image.tar
+```
+
+*Step 3:* In the file `docker-compose.ref.yml` search for the following entries:
+
+```
+GOOGLE_CLIENT_ID: [google-client-id]
+GOOGLE_CLIENT_SECRET: [google-client-secret]
+GITHUB_CLIENT_ID: [github-client-id]
+GITHUB_CLIENT_SECRET: [github-client-secret]
+```
+
+Replace `[google-client-id]`, `[google-client-secret]`, `[github-client-id]`, `[github-client-secret]` with your copied values from the <<obtaining-api-keys>>-Section.
+
+=== Run the application
+
+Now you can simply run the application with following steps:
+
+*Step 1:* Type following:
+
+```bash
+$ docker-compose -f docker-compose.yml -f docker-compose.ref.yml up
+```
+
+*Step 2:* In your Webbrowser type `http://localhost:8091` and the webapplication shows up.
+
+=== Development
+
+Before development getting started, we need a terminal for executing commands.
+If you are running a bash-shell on a Linux-Distrubtion or Mac-OS everything should be fine.
+The Windows _Powershell_ and _CMD_ could make some problems and the build-process fails.
+My recommendation is to install the
+https://docs.microsoft.com/de-de/windows/wsl/install-win10[Windows Subsystem for Linux (WSL)]
+in Windows 10 and using the bash-shell from it.
+For further use of Docker in WSL follow the instructions described in this
+https://nickjanetakis.com/blog/setting-up-docker-for-windows-and-wsl-to-work-flawlessly[Blog-Post].
+
+Now we need to install some additional software:
+
+*Step 1:* Install https://git-scm.com/downloads[Git],
+https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html[JDK 11],
+https://maven.apache.org/download.cgi[Maven] and https://nodejs.org/en/[Node.js] on your OS.
+
+*Step 2:* Open a terminal and type
+
+```bash
+$ npm install -g @angular/cli
+```
+
+to install the https://cli.angular.io/[Angular-CLI]
+
+*Step 3:* Open your IDE and install https://projectlombok.org/download[Lombok] as a Plugin.
+
+Now we can download and install the Spring-Boot-Angular-Template for development:
+
+*Step 1:* Git-Clone the Spring-Boot-Angular-Template to your working directory with:
+
+```bash
+$ git clone https://github.com/mrrobworks/spring-boot-angular-template.git
+$ cd spring-boot-angular-template
+```
+
+*Step 2:* In the `application.dev.yml` you will find following:
+
+```
+google:
+  client:
+    client-id: [google-client-id]
+    client-secret: [google-client-secret]
+github:
+  client:
+    client-id: [github-client-id]
+    client-secret: [google-client-secret]
+```
+
+Replace `[google-client-id]`, `[google-client-secret]`, `[github-client-id]`, `[github-client-secret]` with your copied values from the <<obtaining-api-keys>>-Section.
+
+*Step 3:* Install the application with the command:
+
+```bash
+$ ./mvnw clean install
+```
+
+To start the PostgreSQL database in a Docker-Container, open a terminal, change the location to the project-root directory and type following:
+
+```bash
+$  docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+If you develop with https://www.jetbrains.com/idea/[IntelliJ IDEA] there are also some
+https://github.com/mrrobworks/spring-boot-angular-template/tree/master/.idea/runConfigurations[Run-Configurations]
+in the Project-Repository.
+Start the Run-Configurations _docker-compose-DEV_, _backend-spring-boot-DEV_ and _frontend-angular-DEV_ in IntellJ and you are ready to go.
+Open a webbrowser, type `http://localhost:4200`
+and the webapplication shows up.
+
+=== Troubleshooting
+
+*Trouble 1:* When installing the application with `./mvnw clean install` and you getting a error like this:
+
+```
+[ERROR] Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+[WARNING] An attempt failed, will retry 1 more times
+org.apache.maven.plugin.MojoExecutionException: Could not build image
+```
+
+then restart the Docker deamon and the error should be gone.
+
+*Trouble 2:* Using CMD or Powershell in Windows and install the application with `mvnw.cmd clean install` it appears following:
+
+```
+[INFO] > cd bin && ng build --prod
+[INFO]
+[ERROR] 'ng' is not recognized as an internal or external command,
+[ERROR] operable program or batch file.
+```
+
+This is usually a problem when installing the application with CMD or Powershell.
+The command `ng`
+from the Angular-CLI is not recognized correctly.
+You need to install _Node.js_ and _Angular-CLI_ and then set the corresponding Windows-Evironment-Path variables.
+Also you can change in `frontend/package.json`
+the following:
+
+```
+"scripts": {
+    "ng": "ng",
+    "start": "ng serve --proxy-config proxy.conf.json",
+    "build": "ng build --prod",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  }
+```
+
+*Trouble 3:* Resolving EACCES permissions errors when installing packages globally
+
+```
+[INFO] Running 'npm install -g @angular/cli@8.0.0' in /mnt/c/opt/workspace/intellij/spring-boot-angular-template/frontend
+[ERROR] npm ERR! path /mnt/c/opt/workspace/intellij/spring-boot-angular-template/frontend/lib/node_modules/@angular/cli/node_modules/normalize-package-data[ERROR] npm ERR! code EACCES[ERROR] npm ERR! errno -13
+[ERROR] npm ERR! syscall rename[ERROR] npm ERR! Error: EACCES: permission denied, rename '/mnt/c/opt/workspace/intellij/spring-boot-angular-template/frontend/lib/node_modules/@angular/cli/node_modules/normalize-package-data' -> '/mnt/c/opt/workspace/intellij/spring-boot-angular-template/frontend/lib/node_modules/@angular/cli/node_modules/.normalize-package-data.DELETE'
+```
+
+Follow the instructions from https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally[here].
+
+== TODOs
+
+- [ ] Redesign Angular-Frontend CSS
+- [ ] Replace some components in frontend (Checkbox)
+- [ ] Review Code in Frontend
+- [ ] WebMvcTest for REST-Controller (mockMvc)
+- [ ] Add Swagger Documentation for REST-Controllers
+- [ ] Swagger with OAuth2 or BasicAuth?
+- [ ] Add spring-boot-devtools?
+- [ ] Using EntityGraph for JPA (instead FetchType.EAGER)?
+- [x] Fix .gitignore-File
+- [x] Add Mockito Tests
+- [x] Create ViewModel-Beans for each JPA-Model-Entity-Bean?
+Using Mapstruct.
+- [x] Using var for local-variables
+- [x] Microservices from this project for creating github-repositories
+- [x] Remove Maven-Module dbsetup and move sql-Files to backend
+- [x] Replace Liquibase with Flyway
+- [x] Changing return types of REST-Controllers to ResponseEntity
+- [x] User-Roles Access on custom sites / elements
+- [x] Angular / CSS / Bootstrap (Angular-Material implemented)
+- [x] Profile in OAuthSecurityConfiguration (Google, Github)
+- [x] User-Role-assignment through webapplication
+- [x] Save LoggedIn User to Session
+- [x] CRUD Roles for Administrator of the Application
+- [x] Building Docker-Image with Spring-Boot and Angular
+- [x] Create schema.sql and data.sql for script based data initialization
+- [x] Validation Rules in backend-model classes (Java Bean Validation API, JSR-303)
+- [x] application.properties change to application.yml
+- [x] Update README.md with actual installation instructions for development and how to setup Intellij / Docker.
+- [x] application-external.properties to yml and add installation instructions to README.md
+- [x] Login-Site Radio-Button Google and Github link to /login and /login/github
