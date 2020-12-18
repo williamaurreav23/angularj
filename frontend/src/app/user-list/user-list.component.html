@@ -1,0 +1,29 @@
+<h1 class="display-4">User List</h1>
+
+<table class="table table-striped" [appShowIfPermission]="'ROLE_ADMIN'">
+  <thead class="thead-light">
+  <tr>
+    <th>User-ID</th>
+    <th>Roles</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let templateUser of templateUsers">
+    <td>{{templateUser.id}}</td>
+    <td>
+      <span *ngFor="let templateRole of templateUser.roles; last as lastTemplateRole">
+        {{templateRole.id}}<span *ngIf="!lastTemplateRole">, </span>
+      </span>
+    </td>
+    <td>
+      <button type="button" class="btn btn-primary" data-toggle="modal"
+              data-target="#userDetailModal" (click)="openUserDetail(templateUser)">
+        <span class="oi oi-pencil"></span>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<app-user-detail (detailActionDoneEvent)="detailActionDone($event)"></app-user-detail>

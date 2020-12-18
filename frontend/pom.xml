@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>de.mrrobworks</groupId>
+		<artifactId>spring-boot-angular-template</artifactId>
+		<version>0.2-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>spring-boot-angular-template-frontend</artifactId>
+	<packaging>pom</packaging>
+
+	<name>spring-boot-angular-template-frontend</name>
+	<description>Frontend with Angular</description>
+
+	<properties>
+		<eirslett.version>1.7.6</eirslett.version>
+		<node.version>v10.16.0</node.version>
+		<npm.version>6.9.0</npm.version>
+    <angular-cli.version>@8.3.3</angular-cli.version>
+  </properties>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>target/frontend</directory>
+				<targetPath>static</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>${eirslett.version}</version>
+
+				<configuration>
+					<nodeVersion>${node.version}</nodeVersion>
+					<npmVersion>${npm.version}</npmVersion>
+					<nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
+					<npmDownloadRoot>http://registry.npmjs.org/npm/-/</npmDownloadRoot>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>install-node-and-npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+					</execution>
+
+          <!-- https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally -->
+          <execution>
+            <id>npm-angular-cli-install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>install -g @angular/cli${angular-cli.version}</arguments>
+            </configuration>
+          </execution>
+
+					<execution>
+						<id>npm-install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+
+          <!--<execution>
+            <id>rimraf-dist</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run clean:dist</arguments>
+            </configuration>
+          </execution>-->
+
+					<execution>
+						<id>npm-run-build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
