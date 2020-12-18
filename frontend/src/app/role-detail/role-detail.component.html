@@ -1,0 +1,44 @@
+<div class="modal fade" id="roleDetailModal" tabindex="-1" role="dialog" [hidden]="!selectedTemplateRole">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{header}}</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="alert alert-success" role="alert" *ngIf="saveSuccessful === true">
+          {{statusMessage}}
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="saveSuccessful === false">
+          {{statusMessage}}
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="save(form.getRawValue())">
+          <div class="form-group">
+            <fieldset [disabled]="detailMode === DetailMode.EDIT">
+              <label for="id" class="col-form-label">ID:</label>
+              <input type="text" class="form-control" id="id" formControlName="id" name="id">
+            </fieldset>
+          </div>
+          <div class="form-group">
+            <label for="description" class="col-form-label">Description:</label>
+            <input type="text" class="form-control" id="description"
+                   formControlName="description" name="description">
+          </div>
+          <input type="submit" class="btn btn-primary" value="Save" [disabled]="!form.valid">
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
